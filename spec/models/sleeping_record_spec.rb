@@ -42,4 +42,19 @@ RSpec.describe SleepingRecord, type: :model do
       end
     end
   end
+
+  describe '#total_slept' do
+    let(:user) { FactoryGirl.create :user }
+    let(:user_sleep) do
+      FactoryGirl.create :sleeping_record,
+                         user: user,
+                         check_in_time: DateTime.now,
+                         check_out_time: DateTime.now + 2.hours,
+                         date: Date.today
+    end
+
+    it 'returns the total time slept from a record' do
+      expect(user_sleep.total_slept).to eq('02:00:00')
+    end
+  end
 end
