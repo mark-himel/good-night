@@ -5,6 +5,11 @@ class User < ApplicationRecord
                           join_table: :followers,
                           foreign_key: :user_id,
                           association_foreign_key: :follower_id
+  has_and_belongs_to_many :following,
+                          class_name: 'User',
+                          join_table: :followers,
+                          foreign_key: :follower_id,
+                          association_foreign_key: :user_id
   has_many :sleeping_records, -> { order(date: :asc) }
 
   def is_sleeping?
@@ -13,5 +18,10 @@ class User < ApplicationRecord
 
   def is_awake?
     sleeping_records.last&.check_out_time.present?
+  end
+
+  def friends
+    # The concept of friends would mean if they both have followed each other
+    following & followers
   end
 end
