@@ -3,6 +3,18 @@ module API
     module Resources
       class Users < Grape::API
         resource :users do
+          desc 'Create an user'
+
+          params do
+            requires :name,
+                     type: String,
+                     desc: 'The name of the user'
+          end
+          post do
+            user = User.create!(name: params[:name])
+            present user, with: Entities::User
+          end
+
           params do
             requires :id, type: Integer, desc: 'User id.'
           end
@@ -42,7 +54,7 @@ module API
               post do
                 user = User.find(params[:id])
                 following_user = User.find(params[:followed_user_id])
-                user.following << following_user
+                user.following << following_user unless user.following.include?(following_user)
                 present user, with: Entities::User
               end
             end
