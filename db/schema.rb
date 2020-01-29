@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_21_162630) do
+ActiveRecord::Schema.define(version: 2020_01_29_170136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 2019_06_21_162630) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "date", "check_in_time"], name: "index_sleeping_records_on_user_id_and_date_and_check_in_time", unique: true
     t.index ["user_id"], name: "index_sleeping_records_on_user_id"
+  end
+
+  create_table "team_member_team_leads", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "team_member_id"
+    t.index ["team_member_id"], name: "index_team_member_team_leads_on_team_member_id"
+    t.index ["user_id", "team_member_id"], name: "lead_member_index", unique: true
+    t.index ["user_id"], name: "index_team_member_team_leads_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
